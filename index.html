@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Plan de Entrenamiento · 30 días</title>
+<style>
+:root{
+  --bg:#0d0f12; --bg2:#14181d; --card:#171c22; --card2:#1d232a;
+  --line:#262e37; --line2:#333d49;
+  --tx:#e8edf2; --tx2:#9aa7b4; --tx3:#67737f;
+  --A:#f5a623; --B:#28c3d4; --C:#a77dff;
+  --ok:#3ddc84; --warn:#ff6b5e;
+  --r:14px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  background:var(--bg); color:var(--tx);
+  font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  font-size:15px; line-height:1.5; padding-bottom:80px;
+  background-image:radial-gradient(1200px 500px at 50% -200px, #1b2129 0%, transparent 70%);
+}
+.wrap{max-width:1180px;margin:0 auto;padding:0 18px}
+h1,h2,h3{line-height:1.15;letter-spacing:-0.02em}
+
+/* HEADER */
+header{padding:34px 0 20px;border-bottom:1px solid var(--line)}
+.eyebrow{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--tx3);font-weight:600}
+h1{font-size:clamp(26px,4.5vw,40px);font-weight:800;margin:6px 0 8px}
+.sub{color:var(--tx2);font-size:14px}
+.sub b{color:var(--tx)}
+
+/* TABS */
+nav.tabs{display:flex;gap:4px;margin-top:22px;background:var(--bg2);padding:4px;border-radius:12px;width:fit-content;border:1px solid var(--line)}
+nav.tabs button{background:none;border:0;color:var(--tx2);font:inherit;font-weight:600;font-size:14px;padding:9px 20px;border-radius:9px;cursor:pointer;transition:.15s}
+nav.tabs button:hover{color:var(--tx)}
+nav.tabs button.on{background:var(--card2);color:var(--tx);box-shadow:0 1px 0 rgba(255,255,255,.05) inset}
+
+/* CONTROLS */
+.controls{display:flex;flex-wrap:wrap;gap:22px;align-items:flex-end;padding:22px 0 6px}
+.ctl label{display:block;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--tx3);font-weight:600;margin-bottom:8px}
+.pills{display:flex;gap:6px;flex-wrap:wrap}
+.pill{background:var(--card);border:1px solid var(--line);color:var(--tx2);font:inherit;font-size:13px;font-weight:600;padding:8px 15px;border-radius:99px;cursor:pointer;transition:.15s;white-space:nowrap}
+.pill:hover{border-color:var(--line2);color:var(--tx)}
+.pill.on{background:var(--tx);color:#0d0f12;border-color:var(--tx)}
+.pill.on.a{background:var(--A);border-color:var(--A)}
+.pill.on.b{background:var(--B);border-color:var(--B)}
+.pill.on.c{background:var(--C);border-color:var(--C)}
+.pill .dot{display:inline-block;width:7px;height:7px;border-radius:99px;margin-right:7px;vertical-align:middle}
+
+/* WEEK BANNER */
+.weekbar{display:flex;gap:14px;align-items:center;background:linear-gradient(90deg,var(--card),transparent);border-left:3px solid var(--tx3);border-radius:0 var(--r) var(--r) 0;padding:14px 18px;margin:22px 0 24px}
+.weekbar .tag{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--tx)}
+.weekbar .txt{color:var(--tx2);font-size:13.5px}
+.weekbar .rpe{margin-left:auto;font-size:12px;font-weight:700;color:var(--tx);background:var(--card2);border:1px solid var(--line);padding:5px 11px;border-radius:99px;white-space:nowrap}
+
+/* SESSION CARD */
+.sess{background:var(--card);border:1px solid var(--line);border-radius:var(--r);margin-bottom:20px;overflow:hidden}
+.sess header{padding:16px 18px;border-bottom:1px solid var(--line);display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.badge{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;font-weight:800;font-size:17px;color:#0d0f12;flex:none}
+.sess h3{font-size:16px;font-weight:700}
+.sess .emf{font-size:12.5px;color:var(--tx2);margin-top:2px}
+.sesstoggle{margin-left:auto;display:flex;align-items:center;gap:9px;font-size:12.5px;font-weight:600;color:var(--tx2);cursor:pointer;user-select:none;background:var(--bg2);border:1px solid var(--line);padding:8px 13px;border-radius:99px;transition:.15s}
+.sesstoggle:hover{border-color:var(--line2)}
+.sesstoggle.on{color:var(--ok);border-color:rgba(61,220,132,.4);background:rgba(61,220,132,.08)}
+.sesstoggle input{display:none}
+.chk{width:16px;height:16px;border-radius:5px;border:1.5px solid var(--line2);display:grid;place-items:center;font-size:10px;color:#0d0f12;flex:none}
+.sesstoggle.on .chk,.exrow.done .chk{background:var(--ok);border-color:var(--ok)}
+.sesstoggle.on .chk:after,.exrow.done .chk:after{content:"✓";font-weight:900}
+
+/* EXERCISE ROWS */
+.exhead,.exrow{display:grid;grid-template-columns:28px minmax(180px,2.2fr) 100px 84px 66px 72px 34px;gap:10px;align-items:center;padding:11px 18px}
+.exhead{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--tx3);font-weight:700;border-bottom:1px solid var(--line);background:var(--bg2)}
+.exrow{border-bottom:1px solid var(--line);transition:background .15s}
+.exrow:last-child{border-bottom:0}
+.exrow:hover{background:var(--card2)}
+.exrow.done{background:rgba(61,220,132,.04)}
+.exnum{font-size:12px;font-weight:700;color:var(--tx3);text-align:center}
+.exname{font-weight:600;font-size:14px}
+.exmus{font-size:11.5px;color:var(--tx3);margin-top:2px}
+.exname .vid{background:none;border:0;color:var(--tx3);cursor:pointer;font-size:12px;padding:0 0 0 6px;transition:.15s}
+.exname .vid:hover{color:var(--A)}
+.prescr{font-size:13px;font-weight:600;color:var(--tx)}
+.prescr small{display:block;font-size:11px;color:var(--tx3);font-weight:500;margin-top:2px}
+input.f{width:100%;background:var(--bg2);border:1px solid var(--line);color:var(--tx);font:inherit;font-size:13.5px;font-weight:600;padding:8px 9px;border-radius:9px;text-align:center;transition:.15s}
+input.f:focus{outline:none;border-color:var(--A);background:var(--bg)}
+input.f::placeholder{color:var(--tx3);font-weight:400}
+.info{font-size:13.5px;font-weight:600;color:var(--tx2);text-align:center;font-variant-numeric:tabular-nums;white-space:nowrap}
+.delta{font-size:11px;font-weight:700;text-align:center}
+.up{color:var(--ok)} .down{color:var(--warn)} .flat{color:var(--tx3)}
+.exchk{display:grid;place-items:center;cursor:pointer}
+.exchk input{display:none}
+
+/* NOTES */
+.noterow{padding:0 18px 12px 60px;border-bottom:1px solid var(--line)}
+.noterow input{width:100%;background:transparent;border:0;border-bottom:1px dashed var(--line2);color:var(--tx2);font:inherit;font-size:12.5px;padding:5px 0}
+.noterow input:focus{outline:none;border-bottom-color:var(--A);color:var(--tx)}
+
+/* KPI */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin:24px 0}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px}
+.kpi .k{font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--tx3);font-weight:700}
+.kpi .v{font-size:30px;font-weight:800;letter-spacing:-.03em;margin:8px 0 2px}
+.kpi .n{font-size:12px;color:var(--tx2)}
+.kpi .v span{font-size:15px;color:var(--tx3);font-weight:600}
+
+/* PANELS */
+.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:20px;margin-bottom:20px}
+.panel h2{font-size:15px;font-weight:700;margin-bottom:4px}
+.panel .ph{font-size:12.5px;color:var(--tx3);margin-bottom:18px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:840px){.grid2{grid-template-columns:1fr}}
+
+/* ADHERENCE GRID */
+.adh{display:grid;grid-template-columns:auto repeat(3,1fr) auto;gap:8px;align-items:center}
+.adh .h{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--tx3);font-weight:700;text-align:center}
+.adh .rl{font-size:12px;font-weight:700;color:var(--tx2);padding-right:6px;white-space:nowrap}
+.cell{height:44px;border-radius:10px;border:1px solid var(--line);background:var(--bg2);display:grid;place-items:center;font-size:12px;font-weight:700;color:var(--tx3);cursor:pointer;transition:.15s}
+.cell:hover{border-color:var(--line2)}
+.cell.on{color:#0d0f12}
+.adh .pct{font-size:12px;font-weight:700;color:var(--tx2);padding-left:6px;text-align:right}
+
+/* TABLE */
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl th{text-align:left;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--tx3);font-weight:700;padding:9px 8px;border-bottom:1px solid var(--line)}
+.tbl td{padding:10px 8px;border-bottom:1px solid var(--line);color:var(--tx2)}
+.tbl tr:last-child td{border-bottom:0}
+.tbl td.n{font-weight:700;color:var(--tx)}
+.tbl td.w{text-align:center;font-variant-numeric:tabular-nums}
+.tbl td.d{text-align:right;font-weight:700}
+.tbl tbody tr:hover{background:var(--card2)}
+.sesstag{display:inline-block;width:18px;height:18px;border-radius:6px;font-size:10px;font-weight:800;color:#0d0f12;text-align:center;line-height:18px;margin-right:8px}
+
+/* MODAL */
+.modal{position:fixed;inset:0;background:rgba(5,7,9,.82);backdrop-filter:blur(6px);display:none;place-items:center;padding:20px;z-index:50}
+.modal.on{display:grid}
+.mbox{background:var(--card);border:1px solid var(--line2);border-radius:18px;max-width:620px;width:100%;max-height:88vh;overflow:auto}
+.mbox header{padding:22px 24px 18px;border-bottom:1px solid var(--line);display:flex;gap:14px;align-items:flex-start}
+.mbox h2{font-size:19px;font-weight:800;letter-spacing:-.02em}
+.mbox .mm{font-size:12.5px;color:var(--tx3);margin-top:4px}
+.mbox .x{margin-left:auto;background:var(--bg2);border:1px solid var(--line);color:var(--tx2);width:32px;height:32px;border-radius:9px;cursor:pointer;font-size:16px;flex:none}
+.mbox .x:hover{color:var(--tx);border-color:var(--line2)}
+.mbody{padding:22px 24px 24px}
+.mbody h4{font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--tx3);font-weight:700;margin:20px 0 10px}
+.mbody h4:first-child{margin-top:0}
+.mbody ul{list-style:none;display:flex;flex-direction:column;gap:8px}
+.mbody li{font-size:13.5px;color:var(--tx2);padding-left:20px;position:relative;line-height:1.5}
+.mbody li:before{content:"";position:absolute;left:4px;top:8px;width:5px;height:5px;border-radius:99px;background:var(--A)}
+.mbody li.err:before{background:var(--warn)}
+.vbtn{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;margin-top:24px;background:var(--A);color:#0d0f12;font:inherit;font-weight:700;font-size:14px;padding:14px;border-radius:12px;border:0;cursor:pointer;text-decoration:none;transition:.15s}
+.vbtn:hover{filter:brightness(1.1)}
+.vnote{font-size:11.5px;color:var(--tx3);text-align:center;margin-top:10px}
+
+/* FOOTER ACTIONS */
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin:26px 0 10px}
+.abtn{background:var(--card);border:1px solid var(--line);color:var(--tx2);font:inherit;font-size:12.5px;font-weight:600;padding:9px 15px;border-radius:9px;cursor:pointer;transition:.15s}
+.abtn:hover{color:var(--tx);border-color:var(--line2)}
+.abtn.dg:hover{color:var(--warn);border-color:rgba(255,107,94,.4)}
+.saved{font-size:12px;color:var(--tx3);align-self:center;margin-left:auto;opacity:0;transition:.3s}
+.saved.on{opacity:1;color:var(--ok)}
+.hide{display:none!important}
+.snote{padding:12px 18px;background:var(--bg2);border-top:1px solid var(--line);display:flex;gap:10px;align-items:center}
+.snote label{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--tx3);font-weight:700;white-space:nowrap}
+.snote input{flex:1;background:transparent;border:0;border-bottom:1px dashed var(--line2);color:var(--tx);font:inherit;font-size:13px;padding:5px 0}
+.snote input:focus{outline:none;border-bottom-color:var(--A)}
+.empty{padding:40px 18px;text-align:center;color:var(--tx3);font-size:13.5px}
+svg .gl{stroke:var(--line);stroke-width:1}
+svg text{font:inherit;font-size:11px;fill:var(--tx3)}
+svg text.val{fill:var(--tx);font-weight:700;font-size:11.5px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:14px}
+.legend span{font-size:11.5px;color:var(--tx2);display:flex;align-items:center;gap:6px}
+.legend i{width:14px;height:3px;border-radius:2px;display:block}
+.rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}
+.rule{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:15px}
+.rule b{display:block;font-size:13px;color:var(--tx);margin-bottom:4px}
+.rule span{font-size:12.5px;color:var(--tx3)}
+@media(max-width:880px){
+  .exhead{display:none}
+  .exrow{grid-template-columns:26px 1fr;grid-template-areas:"n a" ". p" ". f";row-gap:10px;padding:14px 16px}
+  .exnum{grid-area:n;align-self:start;padding-top:2px}
+  .exname{grid-area:a}
+  .prescr{grid-area:p}
+  .fwrap{grid-area:f;display:grid;grid-template-columns:1fr auto 1fr 34px;gap:14px;align-items:end}
+  .delta{text-align:center}
+  .info[data-l]:before,.delta[data-l]:before{content:attr(data-l);display:block;font-size:9px;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--tx3);font-weight:700;margin-bottom:5px}
+  .info,.delta{padding-bottom:9px}
+}
+.fwrap{display:contents}
+@media(max-width:880px){.fwrap{display:grid}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="eyebrow">Plan de 30 días · 3 sesiones semanales · 4 semanas</div>
+  <h1>Plan de Entrenamiento</h1>
+  <p class="sub">Frecuencia semanal por grupo: <b>hombro 3×</b> · <b>espalda 3×</b> · <b>piernas 3×</b> · <b>brazos 3×</b> · <b>pecho 2×</b> · <b>core 2×</b></p>
+  <nav class="tabs">
+    <button id="tabT" class="on" onclick="setTab('train')">Entrenamiento</button>
+    <button id="tabP" onclick="setTab('prog')">Progreso</button>
+  </nav>
+</header>
+
+<section id="viewTrain">
+  <div class="controls">
+    <div class="ctl">
+      <label>Semana</label>
+      <div class="pills" id="weekPills"></div>
+    </div>
+    <div class="ctl">
+      <label>Sesión</label>
+      <div class="pills" id="sessPills"></div>
+    </div>
+  </div>
+  <div class="weekbar" id="weekbar"></div>
+  <div id="sessions"></div>
+  <div class="panel">
+    <h2>Reglas</h2>
+    <p class="ph">Las 6 no negociables del plan</p>
+    <div class="rules" id="rules"></div>
+  </div>
+</section>
+
+<section id="viewProg" class="hide">
+  <div class="kpis" id="kpis"></div>
+  <div class="grid2">
+    <div class="panel">
+      <h2>Sesiones completadas</h2>
+      <p class="ph">Tocá una celda para marcar o desmarcar</p>
+      <div class="adh" id="adh"></div>
+    </div>
+    <div class="panel">
+      <h2>Tonelaje por semana</h2>
+      <p class="ph">Carga × series × repeticiones, sumado en las 3 sesiones</p>
+      <div id="chartTon"></div>
+    </div>
+  </div>
+  <div class="panel">
+    <h2>Progresión de cargas por ejercicio</h2>
+    <p class="ph">Kilos registrados en cada semana y variación de la semana 1 a la última con dato</p>
+    <div style="overflow-x:auto"><table class="tbl" id="progTable"></table></div>
+  </div>
+  <div class="panel">
+    <h2>Curva de carga</h2>
+    <p class="ph">Evolución semanal de los ejercicios con al menos dos registros</p>
+    <div id="chartLines"></div>
+  </div>
+  <div class="actions">
+    <button class="abtn" onclick="exportJSON()">Exportar datos</button>
+    <button class="abtn" onclick="document.getElementById('imp').click()">Importar datos</button>
+    <input type="file" id="imp" accept="application/json" class="hide" onchange="importJSON(this)">
+    <button class="abtn dg" onclick="resetAll()">Borrar todo</button>
+    <span class="saved" id="saved">Guardado</span>
+  </div>
+</section>
+</div>
+
+<div class="modal" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="mbox">
+    <header>
+      <div>
+        <h2 id="mTitle"></h2>
+        <div class="mm" id="mMus"></div>
+      </div>
+      <button class="x" onclick="closeModal()">✕</button>
+    </header>
+    <div class="mbody" id="mBody"></div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════ DATOS DEL PLAN ═══════════════ */
+const SESSIONS = [
+ {id:"A", day:"Lunes", title:"Empuje dominante", emf:"Pecho, deltoide anterior/lateral, tríceps, cuádriceps", color:"var(--A)", ex:[
+  {id:"A1", n:"Sentadilla trasera (o goblet)", mus:"Cuádriceps, glúteo, aductores, erectores", pres:"4 × 5", pres4:"3 × 5", rest:"2–3 min", rl:"5", sets:4, reps:5,
+   cues:["Barra apoyada en el trapecio, no en el cuello. Codos abajo y pecho arriba.","Pies al ancho de hombros, puntas ligeramente afuera. Rodillas siguen la línea de los pies.","Inspirá arriba, apretá el abdomen y bajá controlado hasta que la cadera pase la altura de la rodilla.","Subí empujando el piso con todo el pie, cadera y pecho suben juntos."],
+   errs:["Que la cadera suba antes que el pecho: te deja la espalda expuesta.","Rodillas que se van hacia adentro en el empuje.","Rebotar abajo en vez de controlar la bajada."]},
+  {id:"A2", n:"Press banca inclinado con mancuernas", mus:"Pectoral superior, deltoide anterior, tríceps", pres:"4 × 6–8", pres4:"3 × 6–8", rest:"2 min", rl:"6–8", sets:4, reps:7,
+   cues:["Banco entre 30° y 45°. Más inclinación pasa el trabajo al hombro.","Escápulas retraídas y hundidas contra el banco durante toda la serie.","Bajá hasta que los codos queden a la altura del torso, con los codos a unos 45° del cuerpo.","Empujá juntando las mancuernas en diagonal, sin chocarlas arriba."],
+   errs:["Abrir los codos a 90°: castiga el hombro.","Arquear la lumbar para levantar más.","Bloquear y descansar arriba en cada repetición."]},
+  {id:"A3", n:"Press militar de pie con barra", mus:"Deltoide anterior y lateral, tríceps, core", pres:"3 × 8", pres4:"2 × 8", rest:"2 min", rl:"8", sets:3, reps:8,
+   cues:["Barra apoyada en los deltoides, agarre apenas más ancho que los hombros.","Glúteo y abdomen apretados: el torso es una columna rígida, no un resorte.","Mové la cabeza levemente atrás para que la barra suba en línea recta y volvé a meterla al pasarla.","Arriba, la barra queda sobre la mitad del pie, no por delante."],
+   errs:["Arquear la lumbar para convertirlo en un press inclinado.","Empujar hacia adelante en vez de hacia arriba.","Usar impulso de piernas (eso ya es push press)."]},
+  {id:"A4", n:"Remo con mancuerna a una mano", mus:"Dorsal ancho, romboides, trapecio medio, bíceps", pres:"3 × 10 c/lado", pres4:"2 × 10 c/lado", rest:"90 s", rl:"10", sets:3, reps:10, side:2,
+   cues:["Una rodilla y una mano en el banco, espalda paralela al piso y neutra.","Tirá con el codo pegado al cuerpo, llevándolo hacia la cadera.","Arriba, juntá la escápula hacia la columna un instante.","Bajá controlado hasta estirar el dorsal por completo."],
+   errs:["Rotar el torso para ayudarse: el trabajo se va del dorsal.","Tirar con el bíceps y el antebrazo en vez de con la espalda.","Recorrido corto sin estirar abajo."]},
+  {id:"A5", n:"Elevaciones laterales", mus:"Deltoide lateral", pres:"4 × 15", pres4:"3 × 15", rest:"45 s", rl:"15", sets:4, reps:15,
+   cues:["Torso apenas inclinado adelante, codos con una leve flexión fija.","Subí hasta la altura del hombro liderando con el codo, no con la mano.","Imaginá que vertés agua de una jarra: meñique apenas más alto que el pulgar.","Bajá en 2 segundos. Acá el peso es chico a propósito."],
+   errs:["Balancear el cuerpo para levantar más kilos.","Encoger el trapecio y subir los hombros a las orejas.","Pasar la altura del hombro."]},
+  {id:"A6", n:"Fondos o extensión de tríceps en polea", mus:"Tríceps, pectoral inferior", pres:"3 × 12", pres4:"2 × 12", rest:"60 s", rl:"12", sets:3, reps:12,
+   cues:["En fondos: torso vertical si querés tríceps, inclinado si querés pecho.","Bajá hasta que el codo llegue a 90°, sin hundir el hombro por debajo del codo.","En polea: codos pegados al costado y quietos, solo se mueve el antebrazo.","Extendé del todo y apretá el tríceps un segundo arriba."],
+   errs:["Bajar demasiado en fondos y forzar la cápsula del hombro.","Despegar los codos del cuerpo en la polea.","Usar el peso del cuerpo hacia adelante para empujar la barra."]}
+ ]},
+ {id:"B", day:"Miércoles", title:"Tirón dominante", emf:"Dorsal, trapecio, deltoide posterior, bíceps, isquios", color:"var(--B)", ex:[
+  {id:"B1", n:"Peso muerto (convencional o rumano)", mus:"Isquios, glúteo, erectores, trapecio, antebrazo", pres:"4 × 5", pres4:"3 × 5", rest:"3 min", rl:"5", sets:4, reps:5,
+   cues:["Barra sobre la mitad del pie, casi tocando la canilla.","Cadera arriba, pecho alto, espalda neutra. Tensá el dorsal como si quisieras romper la barra.","Empujá el piso con las piernas y llevá la cadera hacia adelante; la barra no se despega del cuerpo.","Arriba se termina con glúteo apretado, no con la espalda hacia atrás."],
+   errs:["Redondear la lumbar al despegar.","Que la barra se aleje de las piernas.","Hiperextender la espalda al final del movimiento."]},
+  {id:"B2", n:"Dominadas (asistidas si hace falta)", mus:"Dorsal ancho, redondo mayor, bíceps", pres:"4 × 6–8", pres4:"3 × 6–8", rest:"2 min", rl:"6–8", sets:4, reps:7,
+   cues:["Agarre prono un poco más ancho que los hombros, pulgar por encima si te resulta cómodo.","Empezá bajando las escápulas antes de flexionar los codos.","Llevá el pecho a la barra, codos hacia los bolsillos.","Bajá hasta estirar del todo, sin soltar la tensión del hombro."],
+   errs:["Impulso de piernas para llegar arriba.","Recorrido a medias sin estirar abajo.","Adelantar el mentón en vez de subir el pecho."]},
+  {id:"B3", n:"Remo con barra, agarre prono", mus:"Trapecio medio, romboides, deltoide posterior", pres:"3 × 8", pres4:"2 × 8", rest:"2 min", rl:"8", sets:3, reps:8,
+   cues:["Torso entre 45° y paralelo al piso, rodillas ligeramente flexionadas.","Tirá la barra hacia el ombligo o el abdomen bajo, codos a unos 45°.","Juntá las escápulas arriba, sin encoger los hombros.","Espalda neutra y quieta: el torso no sube cuando tirás."],
+   errs:["Convertirlo en un tirón vertical con impulso de cadera.","Redondear la espalda por buscar más peso.","Bajar la barra en caída libre."]},
+  {id:"B4", n:"Press plano con mancuernas", mus:"Pectoral mayor, deltoide anterior, tríceps", pres:"3 × 10", pres4:"2 × 10", rest:"90 s", rl:"10", sets:3, reps:10,
+   cues:["Escápulas retraídas, pies firmes en el piso.","Bajá hasta sentir estiramiento en el pecho, codos a 45° del torso.","Empujá en diagonal hacia arriba y hacia adentro.","Muñeca alineada con el antebrazo en todo el recorrido."],
+   errs:["Codos totalmente abiertos en línea con los hombros.","Rebotar las mancuernas en el pecho.","Perder la retracción escapular al fatigarte."]},
+  {id:"B5", n:"Face pull en polea", mus:"Deltoide posterior, trapecio inferior, rotadores", pres:"3 × 15", pres4:"2 × 15", rest:"45 s", rl:"15", sets:3, reps:15,
+   cues:["Polea a la altura de la cara o un poco más arriba, cuerda con agarre neutro.","Tirá hacia la frente separando las manos, codos altos.","Terminá en posición de doble bíceps: nudillos mirando atrás.","Peso liviano y control absoluto; es trabajo de salud del hombro."],
+   errs:["Tirar hacia el pecho en vez de hacia la cara.","Usar tanto peso que el torso se va hacia atrás.","Dejar los codos caídos por debajo de los hombros."]},
+  {id:"B6", n:"Curl con barra Z", mus:"Bíceps braquial", pres:"3 × 12", pres4:"2 × 12", rest:"60 s", rl:"12", sets:3, reps:12,
+   cues:["Codos pegados al costado del torso y fijos: son la bisagra.","Subí hasta contraer el bíceps del todo, sin llevar los codos adelante.","Bajá en 2–3 segundos hasta estirar por completo.","La barra Z respeta mejor la muñeca que la recta."],
+   errs:["Balanceo lumbar para arrancar la repetición.","Adelantar los codos y descansar arriba.","Media repetición en la bajada."]},
+  {id:"B7", n:"Rueda abdominal + plancha lateral", mus:"Recto abdominal, transverso, oblicuos", pres:"3 × 10 / 3 × 40 s", pres4:"2 × 10 / 2 × 40 s", rest:"45 s", rl:"10/40s", sets:3, reps:10,
+   cues:["En la rueda: pelvis en retroversión, lumbar plana. Rodá solo hasta donde la mantengas.","Volvé tirando con el abdomen, no con los brazos ni la cadera.","En la plancha lateral: codo bajo el hombro, cadera alta y alineada.","Respirá parejo; nada de aguantar el aire."],
+   errs:["Arquear la lumbar al extenderse con la rueda.","Dejar caer la cadera en la plancha.","Buscar rango completo antes de tener el control."]}
+ ]},
+ {id:"C", day:"Viernes", title:"Piernas + hombros y brazos", emf:"Deltoide lateral, brazos, glúteo, dorsal", color:"var(--C)", ex:[
+  {id:"C1", n:"Sentadilla búlgara con mancuernas", mus:"Cuádriceps, glúteo mayor, estabilizadores", pres:"3 × 10 c/pierna", pres4:"2 × 10 c/pierna", rest:"90 s", rl:"10", sets:3, reps:10, side:2,
+   cues:["Empeine del pie de atrás sobre el banco, pie de adelante a un paso largo.","Torso apenas inclinado adelante si buscás glúteo; vertical si buscás cuádriceps.","Bajá hasta que la rodilla de atrás casi toque el piso.","El peso vive en el talón de la pierna de adelante."],
+   errs:["Pie de adelante demasiado cerca del banco: castiga la rodilla.","Perder el equilibrio por mirar el piso; fijá un punto al frente.","Empujar con la pierna de atrás."]},
+  {id:"C2", n:"Peso muerto rumano o hip thrust", mus:"Isquios, glúteo mayor, erectores", pres:"3 × 10", pres4:"2 × 10", rest:"2 min", rl:"10", sets:3, reps:10,
+   cues:["Rumano: rodillas casi fijas, llevá la cadera atrás y deslizá la barra por el muslo.","Bajá hasta sentir el estiramiento del isquio, no más. Ahí frenás.","Hip thrust: borde del banco bajo la escápula, mentón metido, costillas abajo.","Terminá con el torso paralelo al piso y el glúteo apretado 1 segundo."],
+   errs:["Flexionar la rodilla y convertir el rumano en peso muerto convencional.","Buscar rango extra redondeando la espalda.","Hiperextender la lumbar arriba del hip thrust."]},
+  {id:"C3", n:"Press militar sentado con mancuernas", mus:"Deltoide anterior y lateral, tríceps", pres:"4 × 8", pres4:"3 × 8", rest:"2 min", rl:"8", sets:4, reps:8,
+   cues:["Respaldo casi vertical, espalda apoyada, pies firmes.","Arrancá con las mancuernas a la altura de las orejas, codos apenas adelante del torso.","Empujá arriba y ligeramente hacia adentro sin chocar las mancuernas.","Bajá controlado hasta los 90° de codo."],
+   errs:["Codos totalmente abiertos hacia los costados.","Despegar la lumbar del respaldo.","Recorrido corto por usar demasiado peso."]},
+  {id:"C4", n:"Jalón al pecho, agarre ancho", mus:"Dorsal ancho, redondo mayor, bíceps", pres:"3 × 12", pres4:"2 × 12", rest:"90 s", rl:"12", sets:3, reps:12,
+   cues:["Muslos trabados bajo el rodillo, torso con una leve inclinación atrás y fija.","Empezá bajando las escápulas, después flexioná los codos.","Llevá la barra a la clavícula, codos hacia abajo y atrás.","Volvé arriba controlado, dejando estirar el dorsal."],
+   errs:["Tirar detrás de la nuca.","Balancear el torso para arrastrar el peso.","Soltar la barra hacia arriba sin frenar."]},
+  {id:"C5", n:"Serie descendente de laterales", mus:"Deltoide lateral", pres:"3 × 12+12+12", pres4:"2 × 12+12+12", rest:"90 s", rl:"12×3", sets:3, reps:36,
+   cues:["Secuencia sin pausa: mancuerna → polea → banda.","Dejá una o dos repeticiones en reserva en cada tramo. No busques el fallo.","La técnica manda: si se rompe, se termina el tramo.","Anotá el peso del primer tramo (la mancuerna) para seguir la progresión."],
+   errs:["Llegar al fallo en el primer tramo y arrastrar los otros dos con impulso.","Descansar entre tramos.","Subir los hombros hacia las orejas cuando aparece la fatiga."]},
+  {id:"C6", n:"Superserie: curl martillo + press francés", mus:"Braquial, braquiorradial, tríceps", pres:"3 × 12 c/u", pres4:"2 × 12 c/u", rest:"60 s", rl:"12", sets:3, reps:24,
+   cues:["Martillo: agarre neutro, pulgar arriba, codos quietos al costado.","Pasá al press francés sin descanso.","Press francés: codos apuntando al techo y fijos, bajá hasta la frente o detrás de la cabeza.","Extendé sin bloquear de golpe; el codo agradece."],
+   errs:["Abrir los codos en el press francés y convertirlo en un press cerrado.","Balanceo de torso en el martillo.","Descansar entre los dos ejercicios de la superserie."]}
+ ]}
+];
+
+const WEEKS = [
+ {n:1, name:"Calibración", rpe:"RPE 7", txt:"Cargas que te dejen 3 repeticiones en reserva. Anotá carga, reps y sensación."},
+ {n:2, name:"Acumulación", rpe:"RPE 8", txt:"Subí 2,5–5 kg en los básicos, o sumá una repetición con la misma carga."},
+ {n:3, name:"Pico", rpe:"RPE 8–9", txt:"En los ejercicios 1 y 2, una serie pesada de 4–5 repeticiones; después bajá 15 % y completá el resto."},
+ {n:4, name:"Descarga", rpe:"Volumen −30 %", txt:"Una serie menos de cada cosa, con las cargas de la semana 2."}
+];
+
+const RULES = [
+ ["Registrá cada sesión","Carga, reps y sensación."],
+ ["Técnica antes que kilos","Sobre todo en peso muerto y press militar."],
+ ["Si faltás a una sesión, no la dupliques","Corré el calendario un día."],
+ ["Calentá 8 minutos","Movilidad de cadera y hombro, más series de aproximación."],
+ ["Si un día no tenés energía","Bajá la carga y completá las series."],
+ ["Dolor articular ≠ esfuerzo","Cambiá el ejercicio por una variante."]
+];
+
+/* ═══════════════ ESTADO ═══════════════ */
+const KEY = "plan30dias.v1";
+let CAN_STORE = true;
+let S = load();
+let week = S.ui.week || 1;
+let filter = S.ui.filter || "ALL";
+let tab = "train";
+
+function blank(){
+  const d={ui:{week:1,filter:"ALL"}, log:{}, sess:{}};
+  return d;
+}
+function load(){
+  try{ const r=JSON.parse(localStorage.getItem(KEY)); if(r&&r.log) return Object.assign(blank(),r); }
+  catch(e){ CAN_STORE=false; }
+  return blank();
+}
+let saveT;
+function save(){
+  S.ui={week,filter};
+  try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){ CAN_STORE=false; }
+  const el=document.getElementById('saved');
+  if(el){
+    el.textContent = CAN_STORE ? 'Guardado' : 'Sin guardado automático · exportá tus datos';
+    el.classList.add('on'); clearTimeout(saveT);
+    if(CAN_STORE) saveT=setTimeout(()=>el.classList.remove('on'),1400);
+  }
+}
+const lk=(w,ex)=>"w"+w+"-"+ex;
+const sk=(w,s)=>"w"+w+"-"+s;
+function getLog(w,ex){ return S.log[lk(w,ex)] || {}; }
+function setLog(w,ex,f,v){
+  const k=lk(w,ex); S.log[k]=S.log[k]||{};
+  if(v===""||v==null) delete S.log[k][f]; else S.log[k][f]=v;
+  if(!Object.keys(S.log[k]).length) delete S.log[k];
+  save();
+}
+function getSess(w,s){ return S.sess[sk(w,s)] || {}; }
+function setSess(w,s,f,v){
+  const k=sk(w,s); S.sess[k]=S.sess[k]||{};
+  if(v===""||v===false||v==null) delete S.sess[k][f]; else S.sess[k][f]=v;
+  if(!Object.keys(S.sess[k]).length) delete S.sess[k];
+  save();
+}
+const ALLEX = SESSIONS.flatMap(s=>s.ex.map(e=>({...e, sid:s.id, color:s.color})));
+const byId = Object.fromEntries(ALLEX.map(e=>[e.id,e]));
+const num = v => { const n=parseFloat(String(v).replace(",",".")); return isFinite(n)?n:null; };
+const fmt = n => (Math.round(n*10)/10).toLocaleString("es-AR");
+
+/* ═══════════════ NAVEGACIÓN ═══════════════ */
+function setTab(t){
+  tab=t;
+  document.getElementById('tabT').classList.toggle('on',t==='train');
+  document.getElementById('tabP').classList.toggle('on',t==='prog');
+  document.getElementById('viewTrain').classList.toggle('hide',t!=='train');
+  document.getElementById('viewProg').classList.toggle('hide',t!=='prog');
+  if(t==='prog') renderProgress();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function setWeek(w){ week=w; save(); renderTrain(); }
+function setFilter(f){ filter=f; save(); renderTrain(); }
+
+/* ═══════════════ VISTA ENTRENAMIENTO ═══════════════ */
+function renderControls(){
+  document.getElementById('weekPills').innerHTML = WEEKS.map(w=>
+    `<button class="pill ${w.n===week?'on':''}" onclick="setWeek(${w.n})">Semana ${w.n}</button>`).join('');
+  document.getElementById('sessPills').innerHTML =
+    `<button class="pill ${filter==='ALL'?'on':''}" onclick="setFilter('ALL')">Todas</button>` +
+    SESSIONS.map(s=>`<button class="pill ${filter===s.id?'on '+s.id.toLowerCase():''}" onclick="setFilter('${s.id}')">
+      <span class="dot" style="background:${s.color}"></span>${s.id} · ${s.day}</button>`).join('');
+}
+function renderWeekbar(){
+  const w=WEEKS[week-1];
+  document.getElementById('weekbar').innerHTML =
+    `<div><div class="tag">Semana ${w.n} — ${w.name}</div><div class="txt">${w.txt}</div></div>
+     <div class="rpe">${w.rpe}</div>`;
+  document.getElementById('weekbar').style.borderLeftColor = week===4?'var(--tx3)':'var(--A)';
+}
+function renderSessions(){
+  const list = SESSIONS.filter(s=> filter==='ALL' || s.id===filter);
+  document.getElementById('sessions').innerHTML = list.map(s=>{
+    const sd=getSess(week,s.id);
+    return `<div class="sess">
+      <header>
+        <div class="badge" style="background:${s.color}">${s.id}</div>
+        <div><h3>${s.day} · ${s.title}</h3><div class="emf">${s.emf}</div></div>
+        <label class="sesstoggle ${sd.done?'on':''}" onclick="toggleSess('${s.id}')">
+          <span class="chk"></span>${sd.done?'Sesión completada':'Marcar completada'}
+        </label>
+      </header>
+      <div class="exhead">
+        <div></div><div>Ejercicio</div><div>Series × reps</div>
+        <div style="text-align:center">Kg</div><div style="text-align:center">Reps</div>
+        <div style="text-align:center">Δ carga</div>
+        <div style="text-align:center">✓</div>
+      </div>
+      ${s.ex.map((e,i)=>exRow(e,i+1)).join('')}
+      <div class="snote">
+        <label>Sensación</label>
+        <input type="text" placeholder="Cómo te sentiste, qué ajustar la próxima…" value="${(sd.note||'').replace(/"/g,'&quot;')}"
+          oninput="setSess(${week},'${s.id}','note',this.value)">
+      </div>
+    </div>`;
+  }).join('') || `<div class="sess"><div class="empty">No hay sesiones para este filtro.</div></div>`;
+}
+function exRow(e,i){
+  const l=getLog(week,e.id);
+  const prev = week>1 ? num(getLog(week-1,e.id).kg) : null;
+  const cur = num(l.kg);
+  let d='<span class="flat">—</span>';
+  if(prev!=null && cur!=null && prev>0){
+    const p=(cur-prev)/prev*100;
+    d = Math.abs(p)<0.5 ? '<span class="flat">=</span>'
+      : `<span class="${p>0?'up':'down'}">${p>0?'+':''}${fmt(p)}%</span>`;
+  }
+  return `<div class="exrow ${l.done?'done':''}" id="row-${e.id}">
+    <div class="exnum">${i}</div>
+    <div class="exname">${e.n}<button class="vid" title="Ver tutorial" onclick="openModal('${e.id}')">▶︎ tutorial</button>
+      <div class="exmus">${e.mus}</div></div>
+    <div class="prescr">${week===4?e.pres4:e.pres}<small>desc. ${e.rest}</small></div>
+    <div class="fwrap">
+      <input class="f" type="text" inputmode="decimal" placeholder="kg" value="${l.kg||''}"
+        oninput="onField('${e.id}','kg',this.value)">
+      <div class="info" data-l="Reps">${e.rl}</div>
+      <div class="delta" data-l="Δ">${d}</div>
+      <label class="exchk" title="Ejercicio hecho" onclick="toggleEx('${e.id}')"><span class="chk"></span></label>
+    </div>
+  </div>`;
+}
+function onField(id,f,v){ setLog(week,id,f,v); if(f==='kg') refreshDelta(id); }
+// solo 'kg' es editable; reps y RPE vienen fijas del plan
+function refreshDelta(id){
+  const row=document.getElementById('row-'+id); if(!row) return;
+  const e=byId[id], l=getLog(week,id);
+  const prev = week>1 ? num(getLog(week-1,id).kg) : null, cur=num(l.kg);
+  let d='<span class="flat">—</span>';
+  if(prev!=null&&cur!=null&&prev>0){ const p=(cur-prev)/prev*100;
+    d = Math.abs(p)<0.5?'<span class="flat">=</span>':`<span class="${p>0?'up':'down'}">${p>0?'+':''}${fmt(p)}%</span>`; }
+  row.querySelector('.delta').innerHTML=d;
+}
+function toggleEx(id){
+  const l=getLog(week,id); setLog(week,id,'done', l.done?"":true);
+  document.getElementById('row-'+id).classList.toggle('done', !l.done);
+}
+function toggleSess(sid){
+  const sd=getSess(week,sid); setSess(week,sid,'done', sd.done?false:true);
+  renderSessions();
+}
+function renderRules(){
+  document.getElementById('rules').innerHTML = RULES.map(([a,b])=>
+    `<div class="rule"><b>${a}</b><span>${b}</span></div>`).join('');
+}
+function renderTrain(){ renderControls(); renderWeekbar(); renderSessions(); }
+
+/* ═══════════════ MODAL TUTORIAL ═══════════════ */
+function openModal(id){
+  const e=byId[id];
+  document.getElementById('mTitle').textContent=e.n;
+  document.getElementById('mMus').textContent=e.mus+" · "+e.pres+" · descanso "+e.rest;
+  const q=encodeURIComponent(e.n.replace(/\s*\(.*?\)\s*/g,' ').trim()+" técnica correcta gimnasio");
+  document.getElementById('mBody').innerHTML =
+    `<h4>Cómo se hace</h4><ul>${e.cues.map(c=>`<li>${c}</li>`).join('')}</ul>
+     <h4>Errores frecuentes</h4><ul>${e.errs.map(c=>`<li class="err">${c}</li>`).join('')}</ul>
+     <a class="vbtn" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=${q}">▶︎ Ver video tutorial</a>
+     <p class="vnote">Abre YouTube en una pestaña nueva con la búsqueda del ejercicio.</p>`;
+  document.getElementById('modal').classList.add('on');
+}
+function closeModal(){ document.getElementById('modal').classList.remove('on'); }
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeModal(); });
+
+/* ═══════════════ ANÁLISIS ═══════════════ */
+function tonnage(w){
+  let t=0;
+  ALLEX.forEach(e=>{
+    const kg=num(getLog(w,e.id).kg);
+    if(kg==null||kg<=0) return;
+    const sets = w===4 ? Math.max(1, e.sets-1) : e.sets;
+    t += kg * sets * e.reps * (e.side||1);
+  });
+  return t;
+}
+function stats(){
+  let doneS=0; const perWeek=[];
+  WEEKS.forEach(w=>{
+    const d=SESSIONS.filter(s=>getSess(w.n,s.id).done).length;
+    doneS+=d; perWeek.push(d);
+  });
+  const rows = ALLEX.map(e=>{
+    const kgs = WEEKS.map(w=>num(getLog(w.n,e.id).kg));
+    const first = kgs.find(k=>k!=null&&k>0) ?? null;
+    let last=null; for(let i=kgs.length-1;i>=0;i--){ if(kgs[i]!=null&&kgs[i]>0){last=kgs[i];break;} }
+    const pct = (first!=null&&last!=null&&first>0&&last!==first) ? (last-first)/first*100 : (first!=null&&last!=null?0:null);
+    return {e, kgs, first, last, pct, n:kgs.filter(k=>k!=null&&k>0).length};
+  });
+  const deltas = rows.filter(r=>r.pct!=null && r.n>1).map(r=>r.pct).sort((a,b)=>a-b);
+  const m=deltas.length;
+  const avg = m ? (m%2 ? deltas[(m-1)/2] : (deltas[m/2-1]+deltas[m/2])/2) : null;
+  const tons = WEEKS.map(w=>tonnage(w.n));
+  const exDone = Object.values(S.log).filter(l=>l.done).length;
+  return {doneS, perWeek, rows, avg, tons, exDone, totalEx: ALLEX.length*4};
+}
+function renderProgress(){
+  const st=stats();
+  const adh = Math.round(st.doneS/12*100);
+  const totTon = st.tons.reduce((a,b)=>a+b,0);
+  document.getElementById('kpis').innerHTML = `
+    <div class="kpi"><div class="k">Sesiones completadas</div>
+      <div class="v">${st.doneS}<span> / 12</span></div><div class="n">${adh}% del plan de 4 semanas</div></div>
+    <div class="kpi"><div class="k">Ejercicios registrados</div>
+      <div class="v">${st.exDone}<span> / ${st.totalEx}</span></div><div class="n">marcados como hechos</div></div>
+    <div class="kpi"><div class="k">Progresión de carga</div>
+      <div class="v" style="color:${st.avg==null?'var(--tx3)':st.avg>0?'var(--ok)':'var(--warn)'}">${st.avg==null?'—':(st.avg>0?'+':'')+fmt(st.avg)+'%'}</div>
+      <div class="n">${st.avg==null?'cargá dos semanas para verlo':'mediana entre ejercicios, primera vs. última semana'}</div></div>
+    <div class="kpi"><div class="k">Tonelaje acumulado</div>
+      <div class="v">${totTon?fmt(totTon/1000):'—'}<span> t</span></div><div class="n">${totTon?fmt(totTon)+' kg movidos':'sin cargas cargadas'}</div></div>`;
+
+  // grilla de adherencia
+  let g = `<div></div>` + SESSIONS.map(s=>`<div class="h">${s.id} · ${s.day.slice(0,3)}</div>`).join('') + `<div></div>`;
+  WEEKS.forEach(w=>{
+    g += `<div class="rl">Sem. ${w.n}</div>`;
+    SESSIONS.forEach(s=>{
+      const on=!!getSess(w.n,s.id).done;
+      g += `<div class="cell ${on?'on':''}" style="${on?'background:'+s.color+';border-color:'+s.color:''}"
+             onclick="cellToggle(${w.n},'${s.id}')">${on?'✓':'·'}</div>`;
+    });
+    const p=Math.round(st.perWeek[w.n-1]/3*100);
+    g += `<div class="pct">${p}%</div>`;
+  });
+  document.getElementById('adh').innerHTML=g;
+
+  document.getElementById('chartTon').innerHTML = barChart(st.tons);
+  document.getElementById('progTable').innerHTML = progTable(st);
+  document.getElementById('chartLines').innerHTML = lineChart(st);
+}
+function cellToggle(w,sid){
+  const sd=getSess(w,sid); setSess(w,sid,'done', sd.done?false:true);
+  renderProgress(); if(w===week) renderSessions();
+}
+
+/* ── gráfico de barras (tonelaje) ── */
+function barChart(vals){
+  const W=520,H=222,pad={l:52,r:12,t:30,b:34};
+  const max=Math.max(...vals,1);
+  const iw=W-pad.l-pad.r, ih=H-pad.t-pad.b;
+  const bw=iw/vals.length*0.52;
+  let g='';
+  for(let i=0;i<=4;i++){
+    const y=pad.t+ih-ih*i/4;
+    g+=`<line class="gl" x1="${pad.l}" y1="${y}" x2="${W-pad.r}" y2="${y}"/>
+        <text x="${pad.l-10}" y="${y+4}" text-anchor="end">${fmt(max*i/4/1000)}t</text>`;
+  }
+  vals.forEach((v,i)=>{
+    const cx=pad.l+iw*(i+0.5)/vals.length;
+    const h=max?ih*v/max:0;
+    const col=['var(--A)','var(--B)','var(--C)','var(--tx3)'][i];
+    g+=`<rect x="${cx-bw/2}" y="${pad.t+ih-h}" width="${bw}" height="${Math.max(h,0)}" rx="6" fill="${col}" opacity="${v?0.9:0.15}"/>
+        ${v?`<text class="val" x="${cx}" y="${pad.t+ih-h-8}" text-anchor="middle">${fmt(v/1000)}t</text>`:''}
+        <text x="${cx}" y="${H-12}" text-anchor="middle">Sem. ${i+1}</text>`;
+  });
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%" preserveAspectRatio="xMidYMid meet">${g}</svg>`;
+}
+
+/* ── tabla de progresión ── */
+function progTable(st){
+  const head=`<thead><tr><th>Ejercicio</th><th style="text-align:center">S1</th><th style="text-align:center">S2</th>
+    <th style="text-align:center">S3</th><th style="text-align:center">S4</th><th style="text-align:center">Curva</th>
+    <th style="text-align:right">Variación</th></tr></thead>`;
+  const body=st.rows.map(r=>{
+    const c=SESSIONS.find(s=>s.id===r.e.sid).color;
+    const cells=r.kgs.map(k=>`<td class="w">${k!=null?fmt(k):'<span style="color:var(--tx3)">—</span>'}</td>`).join('');
+    let d='<span class="flat">—</span>';
+    if(r.pct!=null&&r.n>1) d = r.pct===0?'<span class="flat">=</span>'
+      :`<span class="${r.pct>0?'up':'down'}">${r.pct>0?'+':''}${fmt(r.pct)}%</span>`;
+    return `<tr><td class="n"><span class="sesstag" style="background:${c}">${r.e.sid}</span>${r.e.n}</td>
+      ${cells}<td class="w">${spark(r.kgs,c)}</td><td class="d">${d}</td></tr>`;
+  }).join('');
+  return head+'<tbody>'+body+'</tbody>';
+}
+function spark(kgs,col){
+  const pts=kgs.map((k,i)=>k!=null&&k>0?{i,k}:null).filter(Boolean);
+  if(pts.length<2) return '<span style="color:var(--tx3)">—</span>';
+  const W=64,H=22, ks=pts.map(p=>p.k), mn=Math.min(...ks), mx=Math.max(...ks), rg=mx-mn||1;
+  const d=pts.map(p=>`${(p.i/3)*W},${H-2-((p.k-mn)/rg)*(H-6)}`).join(' L ');
+  return `<svg width="${W}" height="${H}" style="vertical-align:middle"><path d="M ${d}" fill="none" stroke="${col}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+}
+
+/* ── gráfico de líneas (normalizado a % de la semana 1) ── */
+function lineChart(st){
+  const rows=st.rows.filter(r=>r.n>1);
+  if(!rows.length) return `<div class="empty">Cargá kilos en al menos dos semanas para ver la curva.</div>`;
+  const W=760,H=300,pad={l:48,r:46,t:16,b:34};
+  const iw=W-pad.l-pad.r, ih=H-pad.t-pad.b;
+  const series=rows.map(r=>{
+    const base=r.first;
+    const pts=r.kgs.map((k,i)=>k!=null&&k>0?{i, v:(k-base)/base*100}:null).filter(Boolean);
+    return {name:r.e.n, sid:r.e.sid, color:SESSIONS.find(s=>s.id===r.e.sid).color, pts};
+  });
+  const all=series.flatMap(s=>s.pts.map(p=>p.v));
+  const mx=Math.max(...all,5), mn=Math.min(...all,-2);
+  const rg=(mx-mn)||1;
+  const Y=v=>pad.t+ih-((v-mn)/rg)*ih;
+  const X=i=>pad.l+(i/3)*iw;
+  let g='';
+  for(let i=0;i<=4;i++){
+    const v=mn+rg*i/4, y=Y(v);
+    g+=`<line class="gl" x1="${pad.l}" y1="${y}" x2="${W-pad.r}" y2="${y}"/>
+        <text x="${pad.l-10}" y="${y+4}" text-anchor="end">${v>0?'+':''}${Math.round(v)}%</text>`;
+  }
+  if(mn<0&&mx>0) g+=`<line x1="${pad.l}" y1="${Y(0)}" x2="${W-pad.r}" y2="${Y(0)}" stroke="var(--line2)" stroke-width="1.5" stroke-dasharray="4 4"/>`;
+  for(let i=0;i<4;i++) g+=`<text x="${X(i)}" y="${H-12}" text-anchor="middle">Semana ${i+1}</text>`;
+  series.forEach(s=>{
+    const d=s.pts.map(p=>`${X(p.i)},${Y(p.v)}`).join(' L ');
+    g+=`<path d="M ${d}" fill="none" stroke="${s.color}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" opacity=".85"/>`;
+    s.pts.forEach(p=>{ g+=`<circle cx="${X(p.i)}" cy="${Y(p.v)}" r="3.5" fill="${s.color}"><title>${s.name} · semana ${p.i+1} · ${p.v>0?'+':''}${fmt(p.v)}%</title></circle>`; });
+  });
+  const leg=series.map(s=>`<span><i style="background:${s.color}"></i>${s.name}</span>`).join('');
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%" preserveAspectRatio="xMidYMid meet">${g}</svg><div class="legend">${leg}</div>`;
+}
+
+/* ═══════════════ DATOS ═══════════════ */
+function exportJSON(){
+  const b=new Blob([JSON.stringify(S,null,2)],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(b); a.download='plan-30-dias-registro.json'; a.click();
+  URL.revokeObjectURL(a.href);
+}
+function importJSON(inp){
+  const f=inp.files[0]; if(!f) return;
+  const r=new FileReader();
+  r.onload=()=>{ try{ const d=JSON.parse(r.result); if(!d.log) throw 0;
+    S=Object.assign(blank(),d); week=S.ui.week||1; filter=S.ui.filter||'ALL';
+    save(); renderTrain(); renderProgress(); alert('Datos importados.');
+  }catch(e){ alert('El archivo no tiene el formato esperado.'); } };
+  r.readAsText(f); inp.value='';
+}
+function resetAll(){
+  if(!confirm('Se borran todos los kilos, reps y sesiones marcadas. ¿Seguro?')) return;
+  S=blank(); week=1; filter='ALL'; save(); renderTrain(); renderProgress();
+}
+
+/* ═══════════════ INIT ═══════════════ */
+renderTrain(); renderRules();
+</script>
+</body>
+</html>
